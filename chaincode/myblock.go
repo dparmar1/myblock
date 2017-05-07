@@ -138,17 +138,19 @@ func (t *SampleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 func (t *SampleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     
 
-	if function == "user_detail" {
-    return t.getCustomerInfo(stub,args)
-	}else if function == "approve"{
-	return t.getRecordForApproval(stub,args)
-	}else if function == "review"{
-	return t.getRecordForReview(stub,args)
-	}else if function == "org_detail"{
-	return t.getOrgList(stub,args)
-	}
-    return nil,nil
+					if function == "user_detail" {
+					return t.getCustomerInfo(stub,args)
+					}else if function == "approve"{
+					return t.getRecordForApproval(stub,args)
+					}else if function == "review"{
+					return t.getRecordForReview(stub,args)
+					}else if function == "org_detail"{
+					return t.getOrgList(stub,args)
+					}
+					return nil,nil
 }
+ 
+ 
  
 func (t *SampleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     fmt.Println("function called " + function) 
@@ -184,6 +186,8 @@ func (t *SampleChaincode) insert_row(stub shim.ChaincodeStubInterface, args []st
 		lastname := args [2]
 		dob := args [3]
 		pan := args [4]
+		
+		
 		ok, err := stub.InsertRow("UserDetail", shim.Row{
 		Columns: []*shim.Column{
 		    &shim.Column{Value: &shim.Column_String_{String_: ffId}},
@@ -192,7 +196,7 @@ func (t *SampleChaincode) insert_row(stub shim.ChaincodeStubInterface, args []st
 			&shim.Column{Value: &shim.Column_String_{String_: dob}},
 			&shim.Column{Value: &shim.Column_String_{String_: pan}},
 			},
-	})
+		})
 		
 		if err != nil {
 			return nil, err 
@@ -201,8 +205,7 @@ func (t *SampleChaincode) insert_row(stub shim.ChaincodeStubInterface, args []st
 		
 			return nil, errors.New("Row already exists.")
 		}
-	//	myLogger.Debug("insert_row...done!")
-
+	
 		return nil, nil
 }
 
@@ -213,10 +216,10 @@ func (t *SampleChaincode) insert_For_Approval(stub shim.ChaincodeStubInterface, 
 	}
 	
 	
-		userIdval := args [0]
-		orgId := args [1]
-		orgType := args [2]
-		ApprovedStatus := "F"
+		userIdval 		:= args [0]
+		orgId 			:= args [1]
+		orgType 		:= args [2]
+		ApprovedStatus 	:= "F"
 		
 		ok, err := stub.InsertRow("Approval", shim.Row{
 		Columns: []*shim.Column{
@@ -245,10 +248,10 @@ func (t *SampleChaincode) insert_review(stub shim.ChaincodeStubInterface, args [
 	}
 	
 	
-		userIdval := args [0]
-		orgId := args [1]
-		orgType := args [2]
-		ApprovedStatus := "F"
+		userIdval 		:= args [0]
+		orgId 			:= args [1]
+		orgType 		:= args [2]
+		ApprovedStatus 	:= "F"
 		
 		ok, err := stub.InsertRow("Review", shim.Row{
 		Columns: []*shim.Column{
@@ -317,22 +320,22 @@ func (t *SampleChaincode) update_review_status(stub shim.ChaincodeStubInterface,
 	
 
 		
-	col2Val := args[0]
-	col3Val := args[1]
+		col2Val := args[0]
+		col3Val := args[1]
 		
 		
-	var columns []shim.Column
+		var columns []shim.Column
 	//col1 := shim.Column{Value: &shim.ColumnDefinition_INT64{INT64: s}}    Int64
-	col1 := shim.Column { Value: &shim.Column_String_{String_: col2Val}}
-	col2 := shim.Column { Value: &shim.Column_String_{String_: col3Val}}
-	columns = append(columns, col1)
-	columns = append(columns, col2)
+		col1 := shim.Column { Value: &shim.Column_String_{String_: col2Val}}
+		col2 := shim.Column { Value: &shim.Column_String_{String_: col3Val}}
+		columns = append(columns, col1)
+		columns = append(columns, col2)
 
-	row, err := stub.GetRow("Review", columns)
-	if err != nil {
+		row, err := stub.GetRow("Review", columns)
+		if err != nil {
 	
-		return nil, fmt.Errorf("Error: Failed retrieving application with applicationId %s. Error" , err.Error())
-	}
+			return nil, fmt.Errorf("Error: Failed retrieving application with applicationId %s. Error" , err.Error())
+		}
 
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
@@ -347,10 +350,10 @@ func (t *SampleChaincode) update_review_status(stub shim.ChaincodeStubInterface,
 
 	//fmt.Printf("%T, %v", prvOwner, prvOwner)
 	//stub.ReplaceRow(tableName, row)
-	col1_Val := row.Columns[0].GetString_()
-	col2_Val := row.Columns[1].GetString_()
-	col3_Val := row.Columns[2].GetString_()
-	col4_Val := args[2]
+		col1_Val := row.Columns[0].GetString_()
+		col2_Val := row.Columns[1].GetString_()
+		col3_Val := row.Columns[2].GetString_()
+		col4_Val := args[2]
 	
 	
 	
@@ -409,7 +412,13 @@ func (t *SampleChaincode) update_approval_status(stub shim.ChaincodeStubInterfac
 		return nil, nil
 	}
 	
+	//fmt.Printf("%T, %v", row, row)
 	
+
+	
+
+	//fmt.Printf("%T, %v", prvOwner, prvOwner)
+	//stub.ReplaceRow(tableName, row)
 	col1_Val := row.Columns[0].GetString_()
 	col2_Val := row.Columns[1].GetString_()
 	col3_Val := row.Columns[2].GetString_()
